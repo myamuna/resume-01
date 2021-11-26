@@ -1,0 +1,168 @@
+#include<LiquidCrystal.h>
+int relay= 10;
+int ir1 = 2,ir2=3;
+const int rs = 4, en = 5, d4 = 6, d5 = 7, d6 = 8, d7 = 9;
+LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
+byte heart[8] = {
+  0b00000,
+  0b01010,
+  0b11111,
+  0b11111,
+  0b11111,
+  0b01110,
+  0b00100,
+  0b00000
+};
+byte smiley[8] = {
+  0b00000,
+  0b00000,
+  0b01010,
+  0b00000,
+  0b00000,
+  0b10001,
+  0b01110,
+  0b00000
+};
+byte mobile[8]={
+  B00010,
+  B00010,
+  B11111,
+  B10001,
+  B10001,
+  B11111,
+  B11111,
+  B11111
+};
+byte charge[8]={
+  B01010,
+  B01010,
+  B11111,
+  B10001,
+  B10001,
+  B01010,
+  B00100,
+  B00100
+};
+void setup() {
+  pinMode(10,OUTPUT);
+  pinMode(2,INPUT);
+  pinMode(3,INPUT);
+  lcd.begin(16,2);
+  lcd.createChar(1,heart);
+  lcd.createChar(2,smiley);
+  lcd.createChar(3,mobile);
+  lcd.createChar(4,charge);
+  lcd.setCursor(0,0);
+  lcd.print("Welcome to my  ");
+  lcd.setCursor(2,1);
+  lcd.print("project...");
+  lcd.write(2);
+  lcd.write(2);
+  delay(3000);
+  lcd.clear();
+  lcd.setCursor(2,0);
+  lcd.print("Coin Based ");
+  lcd.setCursor(1,1);
+  lcd.print("Mobile Charger");
+  delay(3000);
+  Serial.begin(9600);
+  // put your setup code here, to run once:
+}
+
+void loop() {
+  int value1 = digitalRead(ir1);
+  int value2 = digitalRead(ir2);
+  Serial.println("");
+  Serial.print("value1: ");
+  Serial.print(value1);
+  Serial.println("");
+  Serial.print("value2: ");
+  Serial.print(value2);
+  if(value1==1){
+    Serial.println("");
+    Serial.print("value1: ");
+    Serial.print(value1);
+    lcd.clear();
+    lcd.setCursor(0,0);
+    lcd.print("5 rupees coin ");
+    lcd.setCursor(0,1);
+    lcd.print("Detected ");
+    delay(3000);
+    lcd.clear();
+    lcd.setCursor(0,0);
+    lcd.print("5min charging ");
+    lcd.write(3);
+    lcd.write(4);
+    digitalWrite(10,LOW);
+    delay(60000);
+    lcd.clear();
+    lcd.setCursor(0,0);
+    lcd.print("4min charging ");
+    lcd.write(3);
+    lcd.write(4);
+    delay(60000);
+    lcd.clear();
+    lcd.setCursor(0,0);
+    lcd.print("3min charging ");
+    lcd.write(3);
+    lcd.write(4);
+    delay(60000);
+    lcd.clear();
+    lcd.setCursor(0,0);
+    lcd.print("2min charging");
+    lcd.write(3);
+    lcd.write(4);
+    delay(60000);
+    lcd.clear();
+    lcd.setCursor(0,0);
+    lcd.print("1min charging");
+    lcd.write(3);
+    lcd.write(4);
+    delay(60000);
+    digitalWrite(10,HIGH);
+    lcd.clear();
+    lcd.setCursor(4,0);
+    lcd.print("Time up ");
+    delay(3000);
+    
+  }
+  else if(value2==1){
+    Serial.println("");
+    Serial.print("value2: ");
+    Serial.print(value2);
+    lcd.clear();
+    lcd.setCursor(0,0);
+    lcd.print("2 rupees coin ");
+    lcd.setCursor(0,1);
+    lcd.print("detected ");
+    delay(3000);
+    lcd.clear();
+    lcd.setCursor(0,0);
+    lcd.print("2min charging ");
+    lcd.write(3);
+    lcd.write(4);
+    digitalWrite(10,LOW);
+    delay(60000);
+    lcd.clear();
+    lcd.setCursor(0,0);
+    lcd.print("1min charging ");
+    lcd.write(3);
+    lcd.write(4);
+    digitalWrite(10,LOW);
+    delay(60000);
+    digitalWrite(10,HIGH);
+    lcd.clear();
+    lcd.setCursor(4,0);
+    lcd.print("Time up ");
+    delay(3000);
+  }
+  else{
+    lcd.clear();
+    lcd.setCursor(1,0);
+    lcd.print("Please insert ");
+    lcd.setCursor(4,1);
+    lcd.print("the coin");
+    lcd.write(2);
+    digitalWrite(10,HIGH);
+  }
+}
